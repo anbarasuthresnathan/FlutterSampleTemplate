@@ -1,10 +1,14 @@
 import 'package:boilerplate/data/sharedpref/constants/preferences.dart';
+import 'package:boilerplate/models/post/post.dart';
 import 'package:boilerplate/routes.dart';
 import 'package:boilerplate/stores/post/post_store.dart';
+import 'package:boilerplate/ui/detailedpost/detailedpost.dart';
 import 'package:boilerplate/widgets/progress_indicator_widget.dart';
+import 'package:fimber/fimber.dart';
 import 'package:flushbar/flushbar_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:mobx/mobx.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -55,10 +59,11 @@ class _HomeScreenState extends State<HomeScreen> {
     return Stack(
       children: <Widget>[
         Observer(
+          name: 'listview',
           builder: (context) {
             return _store.loading
                 ? CustomProgressIndicatorWidget()
-                : Material(child: _buildListView());
+                : Material(child: _buildCardListView());
           },
         ),
         Observer(
@@ -73,7 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildListView() {
+  Widget _buildCardListView() {
     return _store.postsList != null
         ? ListView.separated(
             itemCount: _store.postsList.posts.length,
@@ -82,24 +87,78 @@ class _HomeScreenState extends State<HomeScreen> {
             },
             itemBuilder: (context, position) {
               return ListTile(
-                leading: Icon(Icons.cloud_circle),
+      
+                onTap: () {
+                  Fimber.d("onTap called." +
+                      '${_store.postsList.posts[position].id}');
+                  navigate(context,position);
+                },
+                contentPadding:
+                    EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                leading: Builder(builder: (BuildContext context) {
+                  return new GestureDetector(
+                    onTap: () {
+                      // Scaffold.of(context).openDrawer();
+                      Fimber.d("Clicked the User Avatar ");
+                    },
+                    child: new Container(
+                      padding: EdgeInsets.only(right: 12.0),
+                      decoration: new BoxDecoration(
+                          border: new Border(
+                              right: new BorderSide(
+                                  width: 1.0, color: Colors.blueAccent))),
+                      child: CircleAvatar(
+                          backgroundImage:
+                              AssetImage("assets/images/profile.jpeg")),
+                    ),
+                  );
+                }),
+                trailing:
+                    Icon(Icons.keyboard_arrow_right, color: Colors.blueAccent),
                 title: Text(
                   '${_store.postsList.posts[position].title}',
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   softWrap: false,
-                  style: Theme.of(context).textTheme.title,
+                  style: TextStyle(
+                      color: Colors.blue, fontWeight: FontWeight.bold),
                 ),
                 subtitle: Text(
                   '${_store.postsList.posts[position].body}',
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   softWrap: false,
+                  style: TextStyle(
+                      color: Colors.blueGrey, fontWeight: FontWeight.normal),
                 ),
               );
             },
           )
         : Center(child: Text('No posts found'));
+  }
+
+  Widget navigate(BuildContext context,int position) {
+
+    int id2 = _store.postsList.posts[position].id;
+        Fimber.d("Entered inside the navigate method $id2");
+    Future.delayed(Duration(milliseconds: 0), () {
+
+     
+            Navigator.of(context).pushNamedAndRemoveUntil(
+                Routes.detailedpost, ModalRoute.withName(Routes.home),arguments:  Post.fromMap(_store.postsList.posts[position].toMap())
+          
+          //   _store.postsList.posts[position].userId,
+          //   _store.postsList.posts[position].id,
+          //   _store.postsList.posts[position].title,
+          //   _store.postsList.posts[position].body,
+          // })
+            
+);
+
+      // Navigator.of(context).pushNamed(Routes.detailedpost);
+    });
+
+    return Container();
   }
 
   // General Methods:-----------------------------------------------------------
@@ -115,5 +174,9 @@ class _HomeScreenState extends State<HomeScreen> {
     });
 
     return Container();
+  }
+
+  showMessage(messages) {
+    Fimber.d(messages);
   }
 }

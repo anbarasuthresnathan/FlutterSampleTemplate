@@ -1,8 +1,11 @@
 import 'package:boilerplate/models/post/post_list.dart';
+import 'package:boilerplate/routes.dart';
 import 'package:boilerplate/stores/error/error_store.dart';
+import 'package:boilerplate/utils/auth/authentication.dart';
+import 'package:fimber/fimber.dart';
+import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:validators/validators.dart';
-
 part 'form_store.g.dart';
 
 class FormStore = _FormStore with _$FormStore;
@@ -50,7 +53,7 @@ abstract class _FormStore with Store {
 
   @computed
   bool get canLogin =>
-      !formErrorStore.hasErrorsInLogin && userEmail.isNotEmpty && password.isNotEmpty;
+      !formErrorStore.hasErrorsInLogin && userEmail.isNotEmpty && password.isNotEmpty ;
 
   @computed
   bool get canRegister =>
@@ -120,8 +123,8 @@ abstract class _FormStore with Store {
   @action
   Future login() async {
     loading = true;
-
-    Future.delayed(Duration(milliseconds: 2000)).then((future) {
+    
+    Future.delayed(Duration(milliseconds: 2000)).then((future) async {
       loading = false;
       success = true;
       errorStore.showError = false;
@@ -132,7 +135,7 @@ abstract class _FormStore with Store {
       errorStore.errorMessage = e.toString().contains("ERROR_USER_NOT_FOUND")
           ? "Username and password doesn't match"
           : "Something went wrong, please check your internet connection and try again";
-      print(e);
+      Fimber.e(e);
     });
   }
 
@@ -171,6 +174,12 @@ abstract class _FormErrorStore with Store {
   @observable
   String confirmPassword;
 
+  @observable
+  String userId;
+
+  @observable
+  BaseAuth auth;
+
   @computed
   bool get hasErrorsInLogin => userEmail != null || password != null;
 
@@ -180,4 +189,7 @@ abstract class _FormErrorStore with Store {
 
   @computed
   bool get hasErrorInForgotPassword => userEmail != null;
+
+
+
 }

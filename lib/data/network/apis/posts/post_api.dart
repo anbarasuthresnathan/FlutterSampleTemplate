@@ -4,6 +4,7 @@ import 'package:boilerplate/data/network/constants/endpoints.dart';
 import 'package:boilerplate/data/network/dio_client.dart';
 import 'package:boilerplate/data/network/rest_client.dart';
 import 'package:boilerplate/models/post/post_list.dart';
+import 'package:fimber/fimber.dart';
 
 class PostApi {
   // dio instance
@@ -19,6 +20,7 @@ class PostApi {
   Future<PostsList> getPosts() async {
     try {
       final res = await _dioClient.get(Endpoints.getPosts);
+      Fimber.d("The Response of the End Point is: $res");
       return PostsList.fromJson(res);
     } catch (e) {
       print(e.toString());

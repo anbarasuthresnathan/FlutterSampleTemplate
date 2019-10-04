@@ -84,6 +84,16 @@ class PostDataSource {
     );
   }
 
+  Future<int> updateAll(Post post) async {
+    // For filtering by key (ID), RegEx, greater than, and many other criteria,
+    // we use a Finder.
+    return await _postsStore.update(
+      await _db,
+      post.toMap(),
+    
+    );
+  }
+
   Future<int> delete(Post post) async {
     final finder = Finder(filter: Filter.byKey(post.id));
     return await _postsStore.delete(

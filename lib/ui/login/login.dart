@@ -1,3 +1,4 @@
+import 'package:boilerplate/constants/app_theme.dart';
 import 'package:boilerplate/constants/strings.dart';
 import 'package:boilerplate/data/sharedpref/constants/preferences.dart';
 import 'package:boilerplate/routes.dart';
@@ -7,15 +8,21 @@ import 'package:boilerplate/widgets/empty_app_bar_widget.dart';
 import 'package:boilerplate/widgets/progress_indicator_widget.dart';
 import 'package:boilerplate/widgets/rounded_button_widget.dart';
 import 'package:boilerplate/widgets/textfield_widget.dart';
+import 'package:fimber/fimber.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flushbar/flushbar_helper.dart';
 
 class LoginScreen extends StatefulWidget {
+  const LoginScreen({Key key}) : super(key: key);
+
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
+
+enum FormMode { LOGIN, SIGNUP }
 
 class _LoginScreenState extends State<LoginScreen> {
   //text controllers
@@ -30,6 +37,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   //store
   final _store = FormStore();
+
+  _LoginScreenState();
 
   @override
   void initState() {
@@ -67,51 +76,62 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Material _buildBody() {
     return Material(
-      child: Stack(
-        children: <Widget>[
-          OrientationBuilder(
-            builder: (context, orientation) {
-              //variable to hold widget
-              var child;
+      child: Container(
+        decoration: BoxDecoration(
+            gradient: LinearGradient(
+                begin: Alignment.topRight,
+                end: Alignment.bottomLeft,
+                colors: [
+              MaterialColor(AppColors.green[700].value, AppColors.green),
+              MaterialColor(AppColors.green[100].value, AppColors.green)
+            ])),
+        child: Stack(
+          children: <Widget>[
+            OrientationBuilder(
+              builder: (context, orientation) {
+                //variable to hold widget
+                var child;
 
-              //check to see whether device is in landscape or portrait
-              //load widgets based on device orientation
-              orientation == Orientation.landscape
-                  ? child = Row(
-                      children: <Widget>[
-                        Expanded(
-                          flex: 1,
-                          child: _buildLeftSide(),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: _buildRightSide(),
-                        ),
-                      ],
-                    )
-                  : child = Center(child: _buildRightSide());
+                //check to see whether device is in landscape or portrait
+                //load widgets based on device orientation
+                orientation == Orientation.landscape
+                    ? child = Row(
+                        children: <Widget>[
+                          Expanded(
+                            flex: 1,
+                            child: _buildLeftSide(),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: _buildRightSide(),
+                          ),
+                        ],
+                      )
+                    : child = Center(child: _buildRightSide());
+                //  : child = Center(child: _buildLeftSide());
 
-              return child;
-            },
-          ),
-          Observer(
-            name: 'navigate',
-            builder: (context) {
-              return _store.success
-                  ? navigate(context)
-                  : showErrorMessage(context, _store.errorStore.errorMessage);
-            },
-          ),
-          Observer(
-            name: 'loading',
-            builder: (context) {
-              return Visibility(
-                visible: _store.loading,
-                child: CustomProgressIndicatorWidget(),
-              );
-            },
-          )
-        ],
+                return child;
+              },
+            ),
+            Observer(
+              name: 'navigate',
+              builder: (context) {
+                return _store.success
+                    ? navigate(context)
+                    : showErrorMessage(context, _store.errorStore.errorMessage);
+              },
+            ),
+            Observer(
+              name: 'loading',
+              builder: (context) {
+                return Visibility(
+                  visible: _store.loading,
+                  child: CustomProgressIndicatorWidget(),
+                );
+              },
+            )
+          ],
+        ),
       ),
     );
   }
@@ -156,7 +176,7 @@ class _LoginScreenState extends State<LoginScreen> {
           hint: Strings.login_et_user_email,
           inputType: TextInputType.emailAddress,
           icon: Icons.person,
-          iconColor: Colors.black54,
+          iconColor: Colors.black87,
           textController: _userEmailController,
           inputAction: TextInputAction.next,
           onFieldSubmitted: (value) {
@@ -175,8 +195,8 @@ class _LoginScreenState extends State<LoginScreen> {
           hint: Strings.login_et_user_password,
           isObscure: true,
           padding: EdgeInsets.only(top: 16.0),
-          icon: Icons.lock,
-          iconColor: Colors.black54,
+          icon: Icons.security,
+          iconColor: Colors.black87,
           textController: _passwordController,
           focusNode: _passwordFocusNode,
           errorText: _store.formErrorStore.password,
@@ -195,7 +215,7 @@ class _LoginScreenState extends State<LoginScreen> {
           style: Theme.of(context)
               .textTheme
               .caption
-              .copyWith(color: Colors.orangeAccent),
+              .copyWith(color: Colors.deepOrange),
         ),
         onPressed: () {},
       ),
@@ -203,12 +223,16 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget _buildSignInButton() {
+    String userId = "";
     return RoundedButtonWidget(
       buttonText: Strings.login_btn_sign_in,
       buttonColor: Colors.orangeAccent,
       textColor: Colors.white,
       onPressed: () async {
         if (_store.canLogin) {
+          Fimber.d("userId : $userId");
+          userId = await signIn(_store.userEmail, _store.password);
+          Fimber.d("userId : $userId");
           _store.login();
         } else {
           showErrorMessage(context, 'Please fill in all fields');
@@ -217,15 +241,21 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+  Future<String> signIn(String email, String password) async {
+    final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+    FirebaseUser user = await _firebaseAuth.signInWithEmailAndPassword(
+        email: email, password: password);
+    return user.uid;
+  }
+
   // General Methods:-----------------------------------------------------------
   showErrorMessage(BuildContext context, String message) {
-    if(message != null) {
+    if (message != null) {
       FlushbarHelper.createError(
         message: message,
         title: 'Error',
         duration: Duration(seconds: 3),
-      )
-        ..show(context);
+      )..show(context);
     }
 
     return Container();

@@ -3,6 +3,13 @@ class Post {
   int id;
   String title;
   String body;
+  
+  // Post(int userId,int id,String title,String body){
+  //   this.userId=userId;
+  //   this.id=id;
+  //   this.title=title;
+  //   this.body=body;
+  // }
 
   Post({
     this.userId,
@@ -24,5 +31,4 @@ class Post {
         "title": title,
         "body": body,
       };
-  
-}
+  }
