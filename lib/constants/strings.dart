@@ -2,7 +2,7 @@ class Strings {
   Strings._();
 
   //General
-  static const String appName = "Boilerplate Project";
+  static const String appName = "Feedbook App";
 
   //Login
   static const String login_et_user_email = "Enter user email";

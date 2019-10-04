@@ -23,16 +23,16 @@
 
 import 'package:flutter/material.dart';
 
-final ThemeData themeData = new ThemeData(
-    fontFamily: 'ProductSans',
-    brightness: Brightness.light,
-    primarySwatch: MaterialColor(
-        AppColors.green[500].value, AppColors.green),
-    primaryColor: AppColors.green[500],
-    primaryColorBrightness: Brightness.light,
-    accentColor: AppColors.green[500],
-    accentColorBrightness: Brightness.light
-);
+// final ThemeData themeData = new ThemeData(
+//     fontFamily: 'ProductSans',
+//     brightness: Brightness.light,
+//     primarySwatch: MaterialColor(
+//         AppColors.green[500].value, AppColors.green),
+//     primaryColor: AppColors.green[500],
+//     primaryColorBrightness: Brightness.light,
+//     accentColor: AppColors.green[500],
+//     accentColorBrightness: Brightness.light
+// );
 
 class AppColors {
   AppColors._(); // this basically makes it so you can instantiate this class
@@ -49,4 +49,60 @@ class AppColors {
     800: const Color(0xFF76af60),
     900: const Color(0xFF64a24d)
   };
+}
+
+
+class Constants{
+
+  static String appName = "Crypto App";
+
+  //Colors for theme
+  static Color lightPrimary = MaterialColor(
+        AppColors.green[700].value, AppColors.green);
+  static Color darkPrimary = Colors.black;
+  static Color lightAccent = Colors.blue;
+  static Color darkAccent = Colors.blueAccent;
+  static Color lightBG = MaterialColor(
+        AppColors.green[100].value, AppColors.green);
+  static Color darkBG = Colors.black;
+
+
+  static ThemeData lightTheme = ThemeData(
+    backgroundColor: lightBG,
+    primaryColor: lightPrimary,
+    accentColor:  lightAccent,
+    cursorColor: lightAccent,
+    scaffoldBackgroundColor: lightBG,
+    appBarTheme: AppBarTheme(
+      elevation: 0,
+      textTheme: TextTheme(
+        title: TextStyle(
+          color: darkBG,
+          fontSize: 18.0,
+          fontWeight: FontWeight.w800,
+        ),
+      ),
+    ),
+  );
+
+  static ThemeData darkTheme = ThemeData(
+    brightness: Brightness.dark,
+    backgroundColor: darkBG,
+    primaryColor: darkPrimary,
+    accentColor: darkAccent,
+    scaffoldBackgroundColor: darkBG,
+    cursorColor: darkAccent,
+    appBarTheme: AppBarTheme(
+      elevation: 0,
+      textTheme: TextTheme(
+        title: TextStyle(
+          color: lightBG,
+          fontSize: 18.0,
+          fontWeight: FontWeight.w800,
+        ),
+      ),
+    ),
+  );
+
+
 }

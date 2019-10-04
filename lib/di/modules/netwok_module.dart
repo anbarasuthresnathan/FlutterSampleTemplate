@@ -4,6 +4,7 @@ import 'package:boilerplate/data/network/dio_client.dart';
 import 'package:boilerplate/data/network/rest_client.dart';
 import 'package:boilerplate/data/sharedpref/constants/preferences.dart';
 import 'package:dio/dio.dart';
+import 'package:fimber/fimber.dart';
 import 'package:inject/inject.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -23,14 +24,13 @@ class NetworkModule {
     ..interceptors.add(InterceptorsWrapper(onRequest: (Options options) async {
       // getting shared pref instance
       var prefs = await SharedPreferences.getInstance();
-
       // getting token
       var token = prefs.getString(Preferences.auth_token);
-
       if (token != null) {
+      Fimber.i("The Token is  $token");
         options.headers.putIfAbsent('Authorization', () => token);
       } else {
-        print('Auth token is null');
+        Fimber.d('Auth token is null');
       }
     }));
 

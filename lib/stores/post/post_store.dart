@@ -31,7 +31,6 @@ abstract class _PostStore with Store {
   @action
   Future getPosts() async {
     loading = true;
-
     repository.getPosts().then((postsList) {
       this.postsList = postsList;
       loading = false;
