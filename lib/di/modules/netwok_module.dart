@@ -20,6 +20,7 @@ class NetworkModule {
     ..options.connectTimeout = Endpoints.connectionTimeout
     ..options.receiveTimeout = Endpoints.receiveTimeout
     ..options.headers = {'Content-Type': 'application/json; charset=utf-8'}
+    ..options.queryParameters={'country':'in'}
     ..interceptors.add(LogInterceptor(responseBody: true))
     ..interceptors.add(InterceptorsWrapper(onRequest: (Options options) async {
       // getting shared pref instance
