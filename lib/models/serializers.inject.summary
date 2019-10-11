@@ -1,0 +1,8 @@
+{
+  "asset": "asset:boilerplate/lib/models/serializers.dart",
+  "summary": {
+    "injector": [],
+    "module": [],
+    "injectable": []
+  }
+}

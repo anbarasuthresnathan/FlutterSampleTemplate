@@ -13,6 +13,8 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+ 
+  
   @override
   void initState() {
     super.initState();
@@ -44,6 +46,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   navigate() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
+    // SharedPreferences preferences = injector.get
 
     if (preferences.getBool(Preferences.is_logged_in) ?? false) {
       Navigator.of(context).pushReplacementNamed(Routes.home);

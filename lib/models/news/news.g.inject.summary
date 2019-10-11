@@ -1,0 +1,8 @@
+{
+  "asset": "asset:boilerplate/lib/models/news/news.g.dart",
+  "summary": {
+    "injector": [],
+    "module": [],
+    "injectable": []
+  }
+}

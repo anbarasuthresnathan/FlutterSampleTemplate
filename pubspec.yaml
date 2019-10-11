@@ -10,9 +10,19 @@ description: A flutter boilerplate project created using MobX and Provider.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.2.0 <3.0.0"
+  sdk: ">=2.2.2 <3.0.0"
 
 dependencies:
+  flutter_markdown: ^0.2.0
+  built_collection: ^4.2.2
+  built_value: ^6.7.1
+  built_value_generator: ^6.7.1
+  # Extensible logging for Flutter.
+  fimber: ^0.3.2
+
+  firebase_auth: ^0.9.0
+  firebase_database: ^1.0.5
+
   flutter:
     sdk: flutter
 
@@ -22,23 +32,6 @@ dependencies:
 
   # The following adds the shared pref as a dependency in your application
   shared_preferences: ^0.4.3
-  # Extensible logging for Flutter.
-  fimber: ^0.3.2
-  # to add firebase_auth dependency
- # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
-  
-  firebase_auth: ^0.9.0
-  firebase_database: ^1.0.5
-
-  # Built Values provides:
-
-# Immutable value types;
-# EnumClass, classes that behave like enums;
-# JSON serialization.
-
-
-  built_value: ^6.7.1
 
   # A composable, Future-based library for making HTTP requests.
   http: ^0.12.0+1
@@ -61,7 +54,6 @@ dependencies:
   mobx: ^0.3.4
   flutter_mobx: ^0.3.0+1
   mobx_codegen: ^0.3.3+1
-  flutter_markdown: ^0.2.0
 
   # An helper to easily exposes a value using InheritedWidget without having to write one.
   provider: ^1.6.1
@@ -78,8 +70,6 @@ dependencies:
   # A flexible widget for user notification.
   flushbar: ^1.8.2
 
-  built_collection: '>=2.0.0 <5.0.0'
-
   # Dependency injection
   inject:
     git:
@@ -87,15 +77,14 @@ dependencies:
       path: package/inject
 
 dependency_overrides:
-  analyzer: ^0.36.3
+  analyzer: ^0.37.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
   flutter_launcher_icons: "^0.7.0"
-  build_runner: ^1.0.0
-  built_value_generator: ^6.7.1
+  build_runner: ^1.7.1
 
   inject_generator:
     git:
