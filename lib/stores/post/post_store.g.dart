@@ -12,14 +12,14 @@ mixin _$PostStore on _PostStore, Store {
   final _$postsListAtom = Atom(name: '_PostStore.postsList');
 
   @override
-  PostsList get postsList {
+  List<Post> get postsList {
     _$postsListAtom.context.enforceReadPolicy(_$postsListAtom);
     _$postsListAtom.reportObserved();
     return super.postsList;
   }
 
   @override
-  set postsList(PostsList value) {
+  set postsList(List<Post> value) {
     _$postsListAtom.context.conditionallyRunInAction(() {
       super.postsList = value;
       _$postsListAtom.reportChanged();

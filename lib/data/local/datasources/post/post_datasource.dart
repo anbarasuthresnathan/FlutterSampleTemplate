@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:boilerplate/data/local/constants/db_constants.dart';
 import 'package:boilerplate/models/post/post.dart';
 import 'package:boilerplate/models/post/post_list.dart';
+import 'package:boilerplate/models/serializers.dart';
+import 'package:built_collection/built_collection.dart';
 import 'package:sembast/sembast.dart';
 
 class PostDataSource {
@@ -19,8 +23,9 @@ class PostDataSource {
   PostDataSource(this._db);
 
   // DB functions:--------------------------------------------------------------
-  Future<int> insert(Post post) async {
-    return await _postsStore.add(await _db, post.toMap());
+  Future insert(Post post) async {
+    var map = serializers.serializeWith(Post.serializer, post);
+    return await _postsStore.add(await _db, map);
   }
 
   Future<int> count() async {
@@ -37,38 +42,35 @@ class PostDataSource {
       await _db,
       finder: finder,
     );
-
     // Making a List<Post> out of List<RecordSnapshot>
-    return recordSnapshots.map((snapshot) {
-      final post = Post.fromMap(snapshot.value);
+    final BuiltList<Post> listOfTestClasses = deserializeListOf<Post>(recordSnapshots);
+    return recordSnapshots.map((listOfTestClasses) {
+      final post = Post.fromJson(listOfTestClasses.value.toString());
       // An ID is a key of a record from the database.
-      post.id = snapshot.key;
+      Post((b)=>b..id= listOfTestClasses.key);
       return post;
     }).toList();
   }
 
-  Future<PostsList> getPostsFromDb() async {
-
+  Future<List<Post> > getPostsFromDb() async {
     print('Loading from database');
-
     // post list
     var postsList;
-
     // fetching data
     final recordSnapshots = await _postsStore.find(
       await _db,
     );
-
     // Making a List<Post> out of List<RecordSnapshot>
-    if(recordSnapshots.length > 0) {
-      postsList = PostsList(
-          posts: recordSnapshots.map((snapshot) {
-            final post = Post.fromMap(snapshot.value);
-            // An ID is a key of a record from the database.
-            post.id = snapshot.key;
-            return post;
-          }).toList());
-    }
+    if (recordSnapshots.length > 0) {
+    final BuiltList<Post> listOfTestClasses = deserializeListOf<Post>(recordSnapshots);
+// Making a List<Post> out of List<RecordSnapshot>
+      postsList = recordSnapshots.map((listOfTestClasses) {
+      final post = Post.fromJson(listOfTestClasses.value.toString());
+      // An ID is a key of a record from the database.
+      Post((b)=>b..id= listOfTestClasses.key);
+      return post;
+    }).toList();
+    } 
 
     return postsList;
   }
@@ -77,9 +79,10 @@ class PostDataSource {
     // For filtering by key (ID), RegEx, greater than, and many other criteria,
     // we use a Finder.
     final finder = Finder(filter: Filter.byKey(post.id));
+    var map = serializers.serializeWith(Post.serializer, post);
     return await _postsStore.update(
       await _db,
-      post.toMap(),
+      map,
       finder: finder,
     );
   }
@@ -87,10 +90,10 @@ class PostDataSource {
   Future<int> updateAll(Post post) async {
     // For filtering by key (ID), RegEx, greater than, and many other criteria,
     // we use a Finder.
+    var map = serializers.serializeWith(Post.serializer, post);
     return await _postsStore.update(
       await _db,
-      post.toMap(),
-    
+      map,
     );
   }
 
@@ -107,5 +110,4 @@ class PostDataSource {
       await _db,
     );
   }
-
 }

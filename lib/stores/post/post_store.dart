@@ -1,5 +1,6 @@
 import 'package:boilerplate/data/repository.dart';
 import 'package:boilerplate/main.dart';
+import 'package:boilerplate/models/post/post.dart';
 import 'package:boilerplate/models/post/post_list.dart';
 import 'package:boilerplate/stores/error/error_store.dart';
 import 'package:boilerplate/utils/dio/dio_error_util.dart';
@@ -19,7 +20,7 @@ abstract class _PostStore with Store {
 
   // store variables:-----------------------------------------------------------
   @observable
-  PostsList postsList;
+  List<Post> postsList;
 
   @observable
   bool success = false;
@@ -32,7 +33,7 @@ abstract class _PostStore with Store {
   Future getPosts() async {
     loading = true;
     repository.getPosts().then((postsList) {
-      this.postsList = postsList;
+      this.postsList = postsList ;
       loading = false;
       success = true;
       errorStore.showError = false;
