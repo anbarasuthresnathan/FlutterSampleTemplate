@@ -3,7 +3,7 @@
 A boilerplate project created in flutter using MobX and Provider.
 
 ## Getting Started
-
+Thanks to zubairehman copied and refactored a Little with latest libraries and features(https://github.com/zubairehman/flutter-boilerplate-project.git)
 The Boilerplate contains the minimal implementation required to create a new library or project. The repository code is preloaded with some basic components like basic app architecture, app theme, constants and required dependencies to create a new project. By using boiler plate code as standard initializer, we can have same patterns in all the projects that will inherit it. This will also help in reducing setup & development time by allowing you to use same code pattern and avoid re-writing from scratch.
 
 ### Boilerplate Features:
@@ -14,7 +14,8 @@ The Boilerplate contains the minimal implementation required to create a new lib
 * Routing
 * Theme
 * Dio
-* Database
+* Built_Value
+* Database sembast
 * MobX (to connect the reactive data of your application with the UI)
 * Provider (State Management)
 * Encryption
@@ -45,6 +46,7 @@ The Boilerplate contains the minimal implementation required to create a new lib
 * [Notifications](https://github.com/AndreHaueisen/flushbar)
 * [Json Serialization](https://github.com/dart-lang/json_serializable)
 * [Dependency Injection](https://github.com/google/inject.dart)
+* [built_value](https://github.com/google/built_value.dart)
 
 ### Folder Structure
 Here is the core folder structure which flutter provides.
@@ -241,7 +243,7 @@ class MyApp extends StatelessWidget {
 Download or clone this repo by using the link below:
 
 ```
-https://github.com/zubairehman/flutter-boilerplate-project.git
+https://github.com/anbarasuthresnathan/FlutterSampleTemplate.git
 ```
 
 **Step 2:**
@@ -283,11 +285,6 @@ In Visual Studio Code, navigate to `Preferences` -> `Settings` and search for `F
 
 ## Wiki
 
-Checkout [wiki](https://github.com/zubairehman/flutter-boilerplate-project/wiki) for more info
+Checkout [wiki](https://github.com/anbarasuthresnathan/FlutterSampleTemplate/wiki) for more info
 
-## Conclusion
-
-I will be happy to answer any questions that you may have on this approach, and if you want to lend a hand with the boilerplate then please feel free to submit an issue and/or pull request 🙂
-
-Again to note, this is example can appear as over-architectured for what it is - but it is an example only. If you liked my work, don’t forget to ⭐ star the repo to show your support.
 
