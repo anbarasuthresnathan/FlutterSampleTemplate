@@ -17,6 +17,7 @@ import 'package:fimber/fimber.dart';
 var appComponent;
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   Fimber.plantTree(DebugTree.elapsed(useColors: true));
   // app code here ...
   SystemChrome.setPreferredOrientations([

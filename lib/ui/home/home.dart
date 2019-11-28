@@ -1,15 +1,14 @@
-import 'package:boilerplate/data/sharedpref/constants/preferences.dart';
 import 'package:boilerplate/models/post/post.dart';
-import 'package:boilerplate/routes.dart';
-import 'package:boilerplate/stores/post/post_store.dart';
-import 'package:boilerplate/ui/detailedpost/detailedpost.dart';
-import 'package:boilerplate/widgets/progress_indicator_widget.dart';
 import 'package:fimber/fimber.dart';
 import 'package:flushbar/flushbar_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:mobx/mobx.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../data/sharedpref/constants/preferences.dart';
+import '../../routes.dart';
+import '../../stores/post/post_store.dart';
+import '../../widgets/progress_indicator_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -81,7 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildCardListView() {
     return _store.postsList != null
         ? ListView.separated(
-            itemCount: _store.postsList.posts.length,
+            itemCount: _store.postsList.length,
             separatorBuilder: (context, position) {
               return Divider();
             },
@@ -90,7 +89,7 @@ class _HomeScreenState extends State<HomeScreen> {
       
                 onTap: () {
                   Fimber.d("onTap called." +
-                      '${_store.postsList.posts[position].id}');
+                      '${_store.postsList[position].id}');
                   navigate(context,position);
                 },
                 contentPadding:
@@ -116,7 +115,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 trailing:
                     Icon(Icons.keyboard_arrow_right, color: Colors.blueAccent),
                 title: Text(
-                  '${_store.postsList.posts[position].title}',
+                  '${_store.postsList[position].title}',
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   softWrap: false,
@@ -124,7 +123,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       color: Colors.blue, fontWeight: FontWeight.bold),
                 ),
                 subtitle: Text(
-                  '${_store.postsList.posts[position].body}',
+                  '${_store.postsList[position].body}',
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   softWrap: false,
@@ -139,19 +138,19 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget navigate(BuildContext context,int position) {
 
-    int id2 = _store.postsList.posts[position].id;
+    int id2 = _store.postsList[position].id;
         Fimber.d("Entered inside the navigate method $id2");
     Future.delayed(Duration(milliseconds: 0), () {
 
      
             Navigator.of(context).pushNamedAndRemoveUntil(
-                Routes.detailedpost, ModalRoute.withName(Routes.home),arguments:  Post.fromMap(_store.postsList.posts[position].toMap())
+                Routes.detailedpost, ModalRoute.withName(Routes.home),arguments:  Post.fromJson(_store.postsList[position].toJson())
           
-          //   _store.postsList.posts[position].userId,
-          //   _store.postsList.posts[position].id,
-          //   _store.postsList.posts[position].title,
-          //   _store.postsList.posts[position].body,
-          // })
+//           //   _store.postsList.posts[position].userId,
+//           //   _store.postsList.posts[position].id,
+//           //   _store.postsList.posts[position].title,
+//           //   _store.postsList.posts[position].body,
+//           // })
             
 );
 

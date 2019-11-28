@@ -23,31 +23,31 @@ class Repository {
   Repository(this._postApi, this._sharedPrefsHelper, this._postDataSource);
 
   // Post: ---------------------------------------------------------------------
-  Future<PostsList> getPosts() async {
+  Future<List<Post>> getPosts() async {
     // check to see if posts are present in database, then fetch from database
     // else make a network call to get all posts, store them into database for
     // later use
-    // return await _postDataSource.count() > 0
-    //     ? _postDataSource
-    //         .getPostsFromDb()
-    //         .then((postsList) => postsList)
-    //         .catchError((error) => throw error)
-    //     : _postApi.getPosts().then((postsList) {
-    //         postsList.posts.forEach((post) {
-    //           _postDataSource.insert(post);
-    //         });
-
-    //         return postsList;
-    //       }).catchError((error) => throw error);     
-
-    return await _postApi.getPosts().then((postsList) {
-            postsList.posts.forEach((post) {
-              _postDataSource.deleteAll();
+    return await _postDataSource.count() > 0
+        ? _postDataSource
+            .getPostsFromDb()
+            .then((postsList) => postsList)
+            .catchError((error) => throw error)
+        : _postApi.getPosts().then((postsList) {
+            postsList.forEach((post) {
               _postDataSource.insert(post);
             });
 
             return postsList;
-          }).catchError((error) => throw error);  
+          }).catchError((error) => throw error);     
+
+    // return await _postApi.getPosts().then((postsList) {
+    //         postsList.posts.forEach((post) {
+    //           _postDataSource.deleteAll();
+    //           _postDataSource.insert(post);
+    //         });
+
+          //   return postsList;
+          // }).catchError((error) => throw error);  
   }
 
   Future<List<Post>> findPostById(int id) {

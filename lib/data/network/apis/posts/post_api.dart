@@ -3,7 +3,10 @@ import 'dart:async';
 import 'package:boilerplate/data/network/constants/endpoints.dart';
 import 'package:boilerplate/data/network/dio_client.dart';
 import 'package:boilerplate/data/network/rest_client.dart';
+import 'package:boilerplate/models/post/post.dart';
 import 'package:boilerplate/models/post/post_list.dart';
+import 'package:boilerplate/models/serializers.dart';
+import 'package:built_collection/built_collection.dart';
 import 'package:fimber/fimber.dart';
 
 class PostApi {
@@ -17,11 +20,12 @@ class PostApi {
   PostApi(this._dioClient, this._restClient);
 
   /// Returns list of post in response
-  Future<PostsList> getPosts() async {
+  Future<List<Post>> getPosts() async {
     try {
       final res = await _dioClient.get(Endpoints.getPosts);
       Fimber.d("The Response of the End Point is: $res");
-      return PostsList.fromJson(res);
+      final List<Post> listOfTestClasses = deserializeListOf<Post>(res).asList();
+      return listOfTestClasses;
     } catch (e) {
       print(e.toString());
       throw e;
