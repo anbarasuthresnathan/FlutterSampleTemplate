@@ -1,11 +1,9 @@
-import 'dart:convert';
-
-import 'package:boilerplate/data/local/constants/db_constants.dart';
-import 'package:boilerplate/models/post/post.dart';
-import 'package:boilerplate/models/post/post_list.dart';
-import 'package:boilerplate/models/serializers.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:sembast/sembast.dart';
+
+import '../../../../models/post/post.dart';
+import '../../../../models/serializers.dart';
+import '../../constants/db_constants.dart';
 
 class PostDataSource {
   // A Store with int keys and Map<String, dynamic> values.
