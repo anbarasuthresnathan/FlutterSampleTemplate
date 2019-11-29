@@ -1,7 +1,14 @@
-import 'package:boilerplate/ui/home/home.dart';
-import 'package:boilerplate/ui/login/loginsignuppage.dart';
-import 'package:boilerplate/utils/auth/authentication.dart';
 import 'package:flutter/material.dart';
+
+import '../../utils/auth/authentication.dart';
+import '../login/loginsignuppage.dart';
+
+enum AuthStatus {
+  NOT_DETERMINED,
+  NOT_LOGGED_IN,
+  LOGGED_IN,
+}
+
 class RootPage extends StatefulWidget {
   RootPage({this.auth});
 
@@ -9,12 +16,6 @@ class RootPage extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() => new _RootPageState();
-}
-
-enum AuthStatus {
-  NOT_DETERMINED,
-  NOT_LOGGED_IN,
-  LOGGED_IN,
 }
 
 class _RootPageState extends State<RootPage> {
@@ -35,26 +36,25 @@ class _RootPageState extends State<RootPage> {
     });
   }
 
-  void _onLoggedIn() {
-    widget.auth.getCurrentUser().then((user){
+  void loginCallback() {
+    widget.auth.getCurrentUser().then((user) {
       setState(() {
         _userId = user.uid.toString();
       });
     });
     setState(() {
       authStatus = AuthStatus.LOGGED_IN;
-
     });
   }
 
-  void _onSignedOut() {
+  void logoutCallback() {
     setState(() {
       authStatus = AuthStatus.NOT_LOGGED_IN;
       _userId = "";
     });
   }
 
-  Widget _buildWaitingScreen() {
+  Widget buildWaitingScreen() {
     return Scaffold(
       body: Container(
         alignment: Alignment.center,
@@ -67,12 +67,12 @@ class _RootPageState extends State<RootPage> {
   Widget build(BuildContext context) {
     switch (authStatus) {
       case AuthStatus.NOT_DETERMINED:
-        return _buildWaitingScreen();
+        return buildWaitingScreen();
         break;
       case AuthStatus.NOT_LOGGED_IN:
-        return new LoginSignUpPage(
+        return new LoginSignupPage(
           auth: widget.auth,
-          onSignedIn: _onLoggedIn,
+          loginCallback: loginCallback,
         );
         break;
       case AuthStatus.LOGGED_IN:
@@ -80,12 +80,13 @@ class _RootPageState extends State<RootPage> {
           // return new HomeScreen(
           //   userId: _userId,
           //   auth: widget.auth,
-          //   onSignedOut: _onSignedOut,
+          //   logoutCallback: logoutCallback,
           // );
-        } else return _buildWaitingScreen();
+        } else
+          return buildWaitingScreen();
         break;
       default:
-        return _buildWaitingScreen();
+        return buildWaitingScreen();
     }
   }
 }

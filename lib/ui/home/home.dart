@@ -86,11 +86,10 @@ class _HomeScreenState extends State<HomeScreen> {
             },
             itemBuilder: (context, position) {
               return ListTile(
-      
                 onTap: () {
-                  Fimber.d("onTap called." +
-                      '${_store.postsList[position].id}');
-                  navigate(context,position);
+                  Fimber.d(
+                      "onTap called." + '${_store.postsList[position].id}');
+                  navigate(context, position);
                 },
                 contentPadding:
                     EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
@@ -136,25 +135,13 @@ class _HomeScreenState extends State<HomeScreen> {
         : Center(child: Text('No posts found'));
   }
 
-  Widget navigate(BuildContext context,int position) {
-
+  Widget navigate(BuildContext context, int position) {
     int id2 = _store.postsList[position].id;
-        Fimber.d("Entered inside the navigate method $id2");
+    Fimber.d("Entered inside the navigate method $id2");
     Future.delayed(Duration(milliseconds: 0), () {
-
-     
-            Navigator.of(context).pushNamedAndRemoveUntil(
-                Routes.detailedpost, ModalRoute.withName(Routes.home),arguments:  Post.fromJson(_store.postsList[position].toJson())
-          
-//           //   _store.postsList.posts[position].userId,
-//           //   _store.postsList.posts[position].id,
-//           //   _store.postsList.posts[position].title,
-//           //   _store.postsList.posts[position].body,
-//           // })
-            
-);
-
-      // Navigator.of(context).pushNamed(Routes.detailedpost);
+      Navigator.of(context).pushNamedAndRemoveUntil(
+          Routes.detailedpost, ModalRoute.withName(Routes.home),
+          arguments: Post.fromJson(_store.postsList[position].toJson()));
     });
 
     return Container();

@@ -243,8 +243,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future<String> signIn(String email, String password) async {
     final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-    FirebaseUser user = await _firebaseAuth.signInWithEmailAndPassword(
-        email: email, password: password);
+    FirebaseUser user = (await _firebaseAuth.signInWithEmailAndPassword(
+        email: email, password: password)).user;
     return user.uid;
   }
 

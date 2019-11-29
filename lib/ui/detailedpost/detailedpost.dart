@@ -1,12 +1,7 @@
-import 'package:boilerplate/data/sharedpref/constants/preferences.dart';
-import 'package:boilerplate/models/post/post.dart';
-import 'package:boilerplate/stores/post/post_store.dart';
-import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../routes.dart';
+import '../../models/post/post.dart';
 
 // class DetailedPost extends StatefulWidget {
 //   Post data;
